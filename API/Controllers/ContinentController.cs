@@ -22,7 +22,7 @@ namespace API.Controllers
             continentes.Add("Oceania");
 
             
-            //System.Threading.Thread.Sleep(5000);
+            System.Threading.Thread.Sleep(2000);
             return Ok(continentes);
 
 

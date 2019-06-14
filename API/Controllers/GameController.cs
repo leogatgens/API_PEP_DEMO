@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/paises")]
+    [Route("api/game/paises")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class GameController : ControllerBase
     {
         // GET api/values
         [HttpGet]
@@ -18,7 +16,7 @@ namespace API.Controllers
             List<Pais> paisesAmerica = ObtienePaisesDeAmerica();
 
             List<Pais> finalList = paisesEuropa.Concat(paisesAmerica).ToList();
-            //System.Threading.Thread.Sleep(5000);
+            //System.Threading.Thread.Sleep(2000);
             return Ok(finalList);
 
         }
