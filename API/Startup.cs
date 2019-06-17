@@ -34,7 +34,8 @@ namespace API
 
             var connectionString = Configuration["connectionStrings:libraryDBConnectionString"];
             services.AddDbContext<TripsContext>(o => o.UseSqlServer(connectionString));
-            services.AddScoped<IPaisesRepository, TripsRepository>();
+            services.AddScoped<ITripsRepository, TripsRepository>();
+            services.AddScoped<ITravelerRepository, TravelerRepository>();
             services.AddScoped<IConverter, Converter>();
         }
 

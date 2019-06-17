@@ -1,11 +1,77 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Entities;
+using API.Models;
+using API.Models.Dto;
 
 namespace API.Converters
 {
     public class Converter : IConverter
     {
+        Traveler IConverter.MapTravelerForCreationToTravelerDto(TravelerForCreationDto traveler)
+        {
+            Traveler nuevoTraveler = new Traveler()
+            {
+                DateOfBirth = DateTime.Now,
+                Name = traveler.FirstName,
+                LastName = traveler.LastName,
+                Genre = "N",
+                ClientId = traveler.ClientId
+
+
+
+
+            };
+            return nuevoTraveler;
+        }
+
+        Trip IConverter.MapTripDtoToTrip(TripForCreationDto value)
+        {
+            Trip nuevoViaje = new Trip()
+            {
+                DateVisited = DateTime.Now,
+                IdCountry = value.IdPais,
+                TravelerId = value.IdPais
+
+
+
+            };
+            return nuevoViaje;
+        }
+
+        TripDto IConverter.MapTripTripDto(Trip tripFromRepo)
+        {
+            TripDto viajeRealizado = new TripDto()
+            {
+                AnnoDeLaVisita = tripFromRepo.DateVisited,
+                IdPais = tripFromRepo.IdCountry,
+                CodigoPais = tripFromRepo.Country.CountryCode,
+                Pais = tripFromRepo.Country.Name,
+                UrlFlag = tripFromRepo.Country.FlagUrl
+
+
+
+            };
+            return viajeRealizado;
+        }
+
+        TravelerDto IConverter.TravelerRepoToTravelerUI(Traveler travelerFromRepo)
+        {
+            TravelerDto nuevoTraveler = new TravelerDto()
+            {
+                Age = travelerFromRepo.DateOfBirth.Year,
+                Name = string.Concat(travelerFromRepo.Name, " ", travelerFromRepo.LastName),
+                Genre = travelerFromRepo.Genre,
+                Id = travelerFromRepo.Id
+
+
+            };
+            return nuevoTraveler;
+        }
+
+    
     }
 }

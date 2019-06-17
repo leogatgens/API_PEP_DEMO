@@ -19,6 +19,10 @@ namespace API.Context
 
         public DbSet<Country> Country { get; set; }
 
-   
+        public DbSet<Traveler> Traveler { get; set; }
+
+        public DbSet<Trip> Trip { get; set; }
+
+        public DbSet<FutureTrips> FutureTrips { get; set; }
     }
 }
