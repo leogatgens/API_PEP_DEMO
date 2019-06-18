@@ -7,6 +7,7 @@ using System.Collections.Generic;
 namespace API.Controllers
 {
     [Route("api/travelers/{travelerId}/wishlists")]
+    [ApiController]
     public class WishListController : Controller
     {
 
@@ -80,6 +81,34 @@ namespace API.Controllers
             WishTripsDto wishTrip = CustomMapper.WishTripToWishTripUI(wishTripFromRepo);
 
             return Ok(wishTrip);
+        }
+        [HttpDelete("{idWishTrip}")]
+        public IActionResult DeleteWishTripForTraveler( string travelerId, int idWishTrip)
+        {
+
+            if (!travelerRepository.TravelerExists(travelerId))
+            {
+                return NotFound();
+            }
+
+            var wishTripFromRepo = TripsRepository.GetWishTrip(idWishTrip);
+
+            if (wishTripFromRepo == null)
+            {
+                return NotFound();
+            }
+
+
+            TripsRepository.DeleteWishTrip(wishTripFromRepo);
+
+            if (!TripsRepository.Save())
+            {
+                throw new System.Exception("Error deleting wished trip.");
+            }
+
+
+            return NoContent();
+
         }
 
 
