@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API.Converters;
+﻿using API.Converters;
 using API.Models.Dto;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace API.Controllers
 {
@@ -13,21 +10,45 @@ namespace API.Controllers
     public class WishListController : Controller
     {
 
-        private readonly ITripsRepository TripsRepository;
+        private readonly IWishListRepository TripsRepository;
         private readonly ITravelerRepository travelerRepository;
         private readonly IConverter CustomMapper;
 
-        public WishListController(ITripsRepository LibraryRepository, IConverter convertidorModelos, ITravelerRepository LibraryTravelerRepository)
+        public WishListController(IWishListRepository LibraryRepository, IConverter convertidorModelos, ITravelerRepository LibraryTravelerRepository)
         {
             TripsRepository = LibraryRepository;
             CustomMapper = convertidorModelos;
             travelerRepository = LibraryTravelerRepository;
         }
 
+        [HttpPost]
+        public IActionResult AddWishListItem([FromBody] WishTripForCretionDto wishtrip)
+        {
+            if (wishtrip == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+            var wishtripEntity = CustomMapper.MapWishListItemDtoToTrip(wishtrip);
+
+            TripsRepository.AddWishTrip(wishtripEntity);
+
+            if (!TripsRepository.Save())
+            {
+                throw new System.Exception("Creating an wish trip failed on save.");
+            }
+
+            return CreatedAtRoute("GetWishItem",
+               new { id = wishtripEntity.Id }, null);
+
+        }
 
 
 
-       
 
         [HttpGet]
         public ActionResult<IEnumerable<string>> ListTripsWishList(string travelerId)
@@ -42,8 +63,26 @@ namespace API.Controllers
             return Ok(tripsFromRepo); //Retonar un codigo 200
         }
 
-      
 
-       
+
+        [HttpGet("{id}", Name = "GetWishItem")]
+        public IActionResult GetWishTrip(int id)
+        {
+            var wishTripFromRepo = TripsRepository.GetWishTrip(id);
+
+
+
+            if (wishTripFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            WishTripsDto wishTrip = CustomMapper.WishTripToWishTripUI(wishTripFromRepo);
+
+            return Ok(wishTrip);
+        }
+
+
+
     }
 }

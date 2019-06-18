@@ -72,6 +72,32 @@ namespace API.Converters
             return nuevoTraveler;
         }
 
-    
+        FutureTrips IConverter.MapWishListItemDtoToTrip(WishTripForCretionDto newWishTrip)
+        {
+            FutureTrips nuevoWishTrip = new FutureTrips()
+            {
+                ClientId = newWishTrip.ClientId,
+                IdCountry = newWishTrip.IdPais,
+                TripDate = newWishTrip.DateTrip
+
+
+            };
+            return nuevoWishTrip;
+        }
+
+        WishTripsDto IConverter.WishTripToWishTripUI(FutureTrips wishTripFromRepo)
+        {
+            WishTripsDto nuevoWishTrip = new WishTripsDto()
+            {
+                IdPais = wishTripFromRepo.Id,
+                Name = wishTripFromRepo.Country.Name
+
+
+            };
+            return nuevoWishTrip;
+        }
+
+
+
     }
 }

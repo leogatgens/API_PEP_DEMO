@@ -20,8 +20,8 @@ namespace API.Converters
         Traveler MapTravelerForCreationToTravelerDto(TravelerForCreationDto traveler);
         TravelerDto TravelerRepoToTravelerUI(Traveler travelerFromRepo);
 
-
-
+        FutureTrips MapWishListItemDtoToTrip(WishTripForCretionDto value);
+        WishTripsDto WishTripToWishTripUI(FutureTrips travelerFromRepo);
 
     }
 }

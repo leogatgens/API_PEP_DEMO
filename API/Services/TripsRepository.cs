@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API.Context;
+﻿using API.Context;
 using API.Entities;
 using API.Models.Dto;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace API.Services
 {
-    public class TripsRepository : ITripsRepository
+    public class TripsRepository : ITripsRepository,IPaisesRepository,IWishListRepository
     {
         private readonly TripsContext datacontext;
 
@@ -23,7 +22,6 @@ namespace API.Services
 
 
 
-        #region "Trips"
 
         bool ITripsRepository.TripExists(int IdTrip)
         {
@@ -73,40 +71,40 @@ namespace API.Services
         {
             return datacontext.Trip.Include("Country").FirstOrDefault(x => x.Id == IdTrip);
         }
-        #endregion
+   
 
 
-        #region "Country"
+    
         CountryDto ITripsRepository.GetCountry(int id)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<CountryDto> ITripsRepository.ListAllCountries()
-        {
-            return datacontext.Country.Select(c => new CountryDto
-            { IdCountry = c.IdCountry, Name = c.Name, Capital = c.Name, Continent = c.CountryCode, UrlFlag = c.FlagUrl }).ToList();
-        }
-
-        #endregion
-
-        #region "WishTrip"
-
-
-      
-
-
-
-
-      
-        #endregion
 
         bool ITripsRepository.Save()
         {
             return (datacontext.SaveChanges() >= 0);
         }
 
-        IEnumerable<WishTripsDto> ITripsRepository.ListWishList(string clientId)
+      
+
+        IEnumerable<CountryDto> IPaisesRepository.ListAllCountries()
+        {
+            return datacontext.Country.Select(c => new CountryDto
+            { IdCountry = c.IdCountry, Name = c.Name, Capital = c.Name, Continent = c.CountryCode, UrlFlag = c.FlagUrl }).ToList();
+        }
+
+        void IWishListRepository.AddWishTrip(FutureTrips NewTrip)
+        {
+            datacontext.FutureTrips.Add(NewTrip);
+        }
+
+        void IWishListRepository.DeleteWishTrip(FutureTrips wishtripEntity)
+        {
+            datacontext.Remove(wishtripEntity);
+        }
+
+        IEnumerable<WishTripsDto> IWishListRepository.ListWishList(string clientId)
         {
             var mytrips = datacontext.FutureTrips.Include("Country")
                  .Where(x => x.ClientId == clientId)
@@ -121,6 +119,16 @@ namespace API.Services
                  }).ToList();
 
             return mytrips;
+        }
+
+        bool IWishListRepository.Save()
+        {
+            return (datacontext.SaveChanges() >= 0);
+        }
+
+        FutureTrips IWishListRepository.GetWishTrip(int IdTrip)
+        {
+            return datacontext.FutureTrips.Include("Country").FirstOrDefault(x => x.Id == IdTrip);
         }
     }
 }
