@@ -7,8 +7,6 @@ namespace API.Controllers
 {
     [Route("api/paises")]
     [ApiController]
-    [Produces("application/json")]
-    [Consumes("application/json")]
     public class PaisesController : ControllerBase
     {
 
