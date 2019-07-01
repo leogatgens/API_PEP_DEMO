@@ -1,11 +1,8 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Entities;
 using API.Models;
 using API.Models.Dto;
+using System;
 
 namespace API.Converters
 {
@@ -34,7 +31,7 @@ namespace API.Converters
             {
                 DateVisited = DateTime.Now,
                 IdCountry = value.IdPais,
-                TravelerId = value.IdPais
+                TravelerId = 10
 
 
 

@@ -24,5 +24,8 @@ namespace API.Entities
 
         [Required]
         public string FlagUrl { get; set; }
+
+        [Required]
+        public string Capital { get; set; }
     }
 }

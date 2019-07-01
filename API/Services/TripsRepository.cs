@@ -91,7 +91,8 @@ namespace API.Services
         IEnumerable<CountryDto> IPaisesRepository.ListAllCountries()
         {
             return datacontext.Country.Select(c => new CountryDto
-            { IdCountry = c.IdCountry, Name = c.Name, Capital = c.Name, Continent = c.CountryCode, UrlFlag = c.FlagUrl }).ToList();
+            { IdCountry = c.IdCountry, Name = c.Name, Capital = c.Capital
+            , Continent = c.CountryCode, UrlFlag = c.FlagUrl }).ToList();
         }
 
         void IWishListRepository.AddWishTrip(FutureTrips NewTrip)
