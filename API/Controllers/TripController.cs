@@ -58,13 +58,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateTrip(string travelerId,[FromBody] TripForCreationDto newTrip)
+        public IActionResult CreateTrip([FromBody] TripForCreationDto newTrip)
         {
             if (newTrip == null)
             {
                 return BadRequest();
             }
-            newTrip.ClientId = travelerId;
+            
             if (!ModelState.IsValid)
             {
                 return new UnprocessableEntityObjectResult(ModelState);

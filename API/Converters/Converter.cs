@@ -29,7 +29,7 @@ namespace API.Converters
         {
             Trip nuevoViaje = new Trip()
             {
-                DateVisited = DateTime.Now,
+                DateVisited = value.VisitedDate,
                 IdCountry = value.IdPais,
                 TravelerId = 10
 
